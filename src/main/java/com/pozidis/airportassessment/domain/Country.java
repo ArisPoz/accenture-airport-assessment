@@ -1,21 +1,11 @@
 package com.pozidis.airportassessment.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 /**
  * @author arist
  */
 
-@Entity
 public class Country {
-
-    @Id
-    @GeneratedValue
     private long id;
-
     private String code;
     private String name;
     private String continent;

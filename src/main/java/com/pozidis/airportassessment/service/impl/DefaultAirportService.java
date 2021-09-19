@@ -1,4 +1,4 @@
-package com.pozidis.airportassessment.service.implememtation;
+package com.pozidis.airportassessment.service.impl;
 
 import com.pozidis.airportassessment.domain.Airport;
 import com.pozidis.airportassessment.repository.AirportRepository;

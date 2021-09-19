@@ -1,17 +1,11 @@
 package com.pozidis.airportassessment.domain;
 
-import javax.persistence.*;
-
 /**
  * @author arist
  */
 
-@Entity
 public class Airport {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     private String ident;
     private String type;
     private String name;
@@ -28,8 +22,6 @@ public class Airport {
     private String localCode;
     private String homeLink;
     private String wikipediaLink;
-
-    @Column(length = 1000)
     private String keywords;
 
     public Airport() {

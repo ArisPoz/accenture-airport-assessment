@@ -5,7 +5,6 @@ import com.pozidis.airportassessment.domain.Country;
 import com.pozidis.airportassessment.domain.Runway;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
@@ -17,7 +16,6 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.sql.DataSource;
@@ -26,33 +24,33 @@ import javax.sql.DataSource;
  * @author arist
  */
 
-@Configuration
-@EnableBatchProcessing
-public class JobConfiguration {
 
+public class JobHandler {
+
+    private final DataSource dataSource;
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-    private final DataSource dataSource;
 
-    public JobConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, DataSource dataSource) {
+    public JobHandler(DataSource dataSource, JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory) {
+        this.dataSource = dataSource;
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
-        this.dataSource = dataSource;
     }
 
     @Bean
-    public Job csvJob() {
+    public Job executeJob() {
         return jobBuilderFactory
-                .get("csvJob")
+                .get("executeJob")
                 .incrementer(new RunIdIncrementer())
                 .start(parseCountriesCsv())
+                .next(parseAirportsCsv())
                 .build();
     }
 
     @Bean
     public Step parseAirportsCsv() {
 
-        String sql = "INSERT INTO AIRPORT (ID, IDENT, TYPE, NAME, LATITUDE_DEG, LONGITUDE_DEG, ELEVATION_FT, CONTINENT, ISO_COUNTRY, ISO_REGION, " +
+        String sql = "INSERT INTO AIRPORT (CSV_ID, IDENT, TYPE, NAME, LATITUDE_DEG, LONGITUDE_DEG, ELEVATION_FT, CONTINENT, ISO_COUNTRY, ISO_REGION, " +
                 "MUNICIPALITY, SCHEDULED_SERVICE, GPS_CODE, IATA_CODE, LOCAL_CODE, HOME_LINK, WIKIPEDIA_LINK, KEYWORDS) " +
                 "VALUES (:id, :ident, :type, :name, :latitudeDeg, :longitudeDeg, :elevationFt, :continent, :isoCountry, :isoRegion, " +
                 ":municipality, :scheduledService, :gpsCode, :iataCode, :localCode, :homeLink, :wikipediaLink, :keywords) ";
@@ -62,7 +60,7 @@ public class JobConfiguration {
 
         return stepBuilderFactory
                 .get("parseAirportsCsv")
-                .<Airport, Airport>chunk(100)
+                .<Airport, Airport>chunk(50)
                 .reader(reader("/csv/airports.csv", Airport.class, columns))
                 .writer(writer(sql))
                 .build();
@@ -71,14 +69,13 @@ public class JobConfiguration {
     @Bean
     public Step parseCountriesCsv() {
 
-        String sql = "INSERT INTO COUNTRY (ID, CODE, NAME, CONTINENT, WIKIPEDIA_LINK, KEYWORDS) " +
+        String sql = "INSERT INTO COUNTRY (CSV_ID, CODE, NAME, CONTINENT, WIKIPEDIA_LINK, KEYWORDS) " +
                 "VALUES (:id, :code, :name, :continent, :wikipediaLink, :keywords) ";
 
         String[] columns = new String[]{"ID", "CODE", "NAME", "CONTINENT", "WIKIPEDIA_LINK", "KEYWORDS"};
-
         return stepBuilderFactory
                 .get("parseCountriesCsv")
-                .<Country, Country>chunk(100)
+                .<Country, Country>chunk(50)
                 .reader(reader("/csv/countries.csv", Country.class, columns))
                 .writer(writer(sql))
                 .build();
@@ -87,10 +84,10 @@ public class JobConfiguration {
     @Bean
     public Step parseRunwaysCsv() {
 
-        String sql = "INSERT INTO RUNWAY (ID, AIRPORT_REF, AIRPORT_IDENT, LENGTH_FT, WIDTH_FT, SURFACE, LIGHTED, CLOSED, " +
+        String sql = "INSERT INTO RUNWAY (AIRPORT_REF, AIRPORT_IDENT, LENGTH_FT, WIDTH_FT, SURFACE, LIGHTED, CLOSED, " +
                 "LE_IDENT, LE_LATITUDE_DEG, LE_LONGITUDE_DEG, LE_ELEVATION_FT, LE_HEADING_DEGT, LE_DISPLACED_THRESHOLD_FT, " +
                 "HE_IDENT, HE_LATITUDE_DEG, HE_LONGITUDE_DEG, HE_ELEVATION_FT, HE_HEADING_DEGT, HE_DISPLACED_THRESHOLD_FT) " +
-                "VALUES (:id, :airportRef, :airportIdent, :lengthFt, :widthFt, :surface, :lighted, :closed, " +
+                "VALUES (:airportRef, :airportIdent, :lengthFt, :widthFt, :surface, :lighted, :closed, " +
                 ":leIndent, :leLatitudeDeg, :leLongitudeDeg, :leElevationFt, :leHeadingDegt, :leDisplacedThresholdFt, " +
                 ":heIndent, :heLatitudeDeg, :heLongitudeDeg, :heElevationFt, :heHeadingDegt, :heDisplacedThresholdFt, ) ";
 
@@ -100,7 +97,7 @@ public class JobConfiguration {
 
         return stepBuilderFactory
                 .get("parseRunwaysCsv")
-                .<Runway, Runway>chunk(100)
+                .<Runway, Runway>chunk(50)
                 .reader(reader("/csv/runways.csv", Runway.class, columns))
                 .writer(writer(sql))
                 .build();

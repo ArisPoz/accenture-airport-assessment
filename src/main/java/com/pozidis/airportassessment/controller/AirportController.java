@@ -3,7 +3,7 @@ package com.pozidis.airportassessment.controller;
 import com.pozidis.airportassessment.domain.Airport;
 import com.pozidis.airportassessment.service.AirportService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -19,8 +19,8 @@ public class AirportController {
         this.airportService = airportService;
     }
 
-    @GetMapping("/getAirport/{name}")
-    public Airport getByName(@PathVariable String name) {
+    @GetMapping("/getAirportByName")
+    public Airport getByName(@RequestParam String name) {
         return airportService.getAirportByName(name);
     }
 }

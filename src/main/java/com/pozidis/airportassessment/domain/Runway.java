@@ -1,19 +1,12 @@
 package com.pozidis.airportassessment.domain;
 
-import javax.persistence.*;
-
 /**
  * @author arist
  */
 
-@Entity
 public class Runway {
-    @Id
     private long id;
-
-    @ManyToOne
     private Airport airportRef;
-
     private String airportIdent;
     private int lengthFt;
     private int widthFt;
