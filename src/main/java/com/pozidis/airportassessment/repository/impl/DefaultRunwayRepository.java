@@ -26,16 +26,16 @@ public class DefaultRunwayRepository implements RunwayRepository {
     @Override
     public List<Runway> getRunwaysByCountryName(String name) {
         return jdbcTemplate.query(
-                String.format("SELECT r.* " +
-                        "FROM AIRPORT as a, COUNTRY as c, RUNWAY as r " +
-                        "WHERE a.ID= r.AIRPORT_REF AND a.ISO_COUNTRY = c.CODE AND c.NAME= '%s'", name), runwayRowMapper);
+                String.format("SELECT RUNWAY.* FROM AIRPORT, COUNTRY, RUNWAY " +
+                        "WHERE AIRPORT.ID= RUNWAY.AIRPORT_REF AND AIRPORT.ISO_COUNTRY = COUNTRY.CODE AND " +
+                        "COUNTRY.NAME = '%s'", name), runwayRowMapper);
     }
 
     @Override
     public List<Runway> getRunwaysByCountryCode(String code) {
         return jdbcTemplate.query(
-                String.format("SELECT r.* " +
-                        "FROM AIRPORT as a, COUNTRY as c, RUNWAY as r " +
-                        "WHERE a.ID= r.AIRPORT_REF AND a.ISO_COUNTRY = c.CODE AND c.CODE= '%s'", code), runwayRowMapper);
+                String.format("SELECT RUNWAY.* FROM AIRPORT, COUNTRY, RUNWAY " +
+                        "WHERE AIRPORT.ID= RUNWAY.AIRPORT_REF AND AIRPORT.ISO_COUNTRY = COUNTRY.CODE AND " +
+                        "COUNTRY.CODE = '%s'", code), runwayRowMapper);
     }
 }

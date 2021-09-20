@@ -6,7 +6,7 @@ package com.pozidis.airportassessment.domain;
 
 public class Runway {
     private long id;
-    private Airport airportRef;
+    private long airportRef;
     private String airportIdent;
     private int lengthFt;
     private int widthFt;
@@ -29,7 +29,7 @@ public class Runway {
     public Runway() {
     }
 
-    public Runway(Airport airport, String airportIdent, int lengthFt, int widthFt, String surface, boolean lighted,
+    public Runway(long airport, String airportIdent, int lengthFt, int widthFt, String surface, boolean lighted,
                   boolean closed, String leIdent, String leLatitudeDeg, String leLongitudeDeg, String leElevationFt,
                   String leHeadingDegT, String leDisplacedThresholdFt, String heIdent, String heLatitudeDeg, String heLongitudeDeg,
                   String heElevationFt, String heHeadingDegT, String heDisplacedThresholdFt) {
@@ -62,11 +62,11 @@ public class Runway {
         this.id = id;
     }
 
-    public Airport getAirportRef() {
+    public long getAirportRef() {
         return airportRef;
     }
 
-    public void setAirportRef(Airport airport) {
+    public void setAirportRef(long airport) {
         this.airportRef = airport;
     }
 

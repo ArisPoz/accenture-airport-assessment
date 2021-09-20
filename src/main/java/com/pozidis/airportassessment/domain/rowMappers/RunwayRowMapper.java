@@ -1,6 +1,5 @@
 package com.pozidis.airportassessment.domain.rowMappers;
 
-import com.pozidis.airportassessment.domain.Airport;
 import com.pozidis.airportassessment.domain.Runway;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -14,14 +13,14 @@ public class RunwayRowMapper implements RowMapper<Runway> {
     @Override
     public Runway mapRow(ResultSet resultSet, int i) throws SQLException {
         long id = resultSet.getLong("ID");
-        Airport airportRef = resultSet.getObject("AIRPORT_REF", Airport.class);
+        long airportRef = resultSet.getLong("AIRPORT_REF");
         String airportIdent = resultSet.getString("AIRPORT_IDENT");
         int lengthFt = resultSet.getInt("LENGTH_FT");
         int widthFt = resultSet.getInt("WIDTH_FT");
         String surface = resultSet.getString("SURFACE");
         boolean lighted = resultSet.getBoolean("LIGHTED");
         boolean closed = resultSet.getBoolean("CLOSED");
-        String leIdent = resultSet.getString("");
+        String leIdent = resultSet.getString("LE_IDENT");
         String leLatitudeDeg = resultSet.getString("LE_LATITUDE_DEG");
         String leLongitudeDeg = resultSet.getString("LE_LONGITUDE_DEG");
         String leElevationFt = resultSet.getString("LE_ELEVATION_FT");

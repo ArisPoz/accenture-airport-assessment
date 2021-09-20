@@ -3,7 +3,6 @@ package com.pozidis.airportassessment.controller;
 import com.pozidis.airportassessment.domain.Runway;
 import com.pozidis.airportassessment.service.RunwayService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
