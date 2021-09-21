@@ -1,4 +1,4 @@
-package com.pozidis.airportassessment.domain.rowMappers;
+package com.pozidis.airportassessment.domain.mapper;
 
 import com.pozidis.airportassessment.domain.Airport;
 import org.springframework.jdbc.core.RowMapper;
@@ -9,6 +9,7 @@ import java.sql.SQLException;
 /**
  * @author arist
  */
+
 public class AirportRowMapper implements RowMapper<Airport> {
 
     @Override
@@ -32,12 +33,8 @@ public class AirportRowMapper implements RowMapper<Airport> {
         String wikipediaLink = resultSet.getString("WIKIPEDIA_LINK");
         String keywords = resultSet.getString("KEYWORDS");
 
-        Airport airport = new Airport(ident, type, name, latitudeDeg, longitudeDeg, elevationFt, continent,
+        return new Airport(id, ident, type, name, latitudeDeg, longitudeDeg, elevationFt, continent,
                 isoCountry, isoRegion, municipality, scheduledService, gpsCode, iataCode, localCode,
                 homeLink, wikipediaLink, keywords);
-
-        airport.setId(id);
-
-        return airport;
     }
 }

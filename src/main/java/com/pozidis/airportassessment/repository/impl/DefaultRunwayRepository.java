@@ -1,7 +1,7 @@
 package com.pozidis.airportassessment.repository.impl;
 
 import com.pozidis.airportassessment.domain.Runway;
-import com.pozidis.airportassessment.domain.rowMappers.RunwayRowMapper;
+import com.pozidis.airportassessment.domain.mapper.RunwayRowMapper;
 import com.pozidis.airportassessment.repository.RunwayRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -28,7 +28,7 @@ public class DefaultRunwayRepository implements RunwayRepository {
         return jdbcTemplate.query(
                 String.format("SELECT RUNWAY.* FROM AIRPORT, COUNTRY, RUNWAY " +
                         "WHERE AIRPORT.ID= RUNWAY.AIRPORT_REF AND AIRPORT.ISO_COUNTRY = COUNTRY.CODE AND " +
-                        "COUNTRY.NAME = '%s'", name), runwayRowMapper);
+                        "(LOWER(COUNTRY.NAME) LIKE LOWER('%1$s%%') AND DIFFERENCE(LOWER(COUNTRY.NAME), LOWER('%1$s')) >= 2)", name), runwayRowMapper);
     }
 
     @Override
@@ -36,6 +36,6 @@ public class DefaultRunwayRepository implements RunwayRepository {
         return jdbcTemplate.query(
                 String.format("SELECT RUNWAY.* FROM AIRPORT, COUNTRY, RUNWAY " +
                         "WHERE AIRPORT.ID= RUNWAY.AIRPORT_REF AND AIRPORT.ISO_COUNTRY = COUNTRY.CODE AND " +
-                        "COUNTRY.CODE = '%s'", code), runwayRowMapper);
+                        "(LOWER(COUNTRY.CODE) LIKE LOWER('%1$s%%') AND DIFFERENCE(LOWER(COUNTRY.CODE), LOWER('%1$s')) >= 2)", code), runwayRowMapper);
     }
 }

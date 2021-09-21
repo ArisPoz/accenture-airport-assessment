@@ -1,4 +1,4 @@
-package com.pozidis.airportassessment.domain.rowMappers;
+package com.pozidis.airportassessment.domain.mapper;
 
 import com.pozidis.airportassessment.domain.Runway;
 import org.springframework.jdbc.core.RowMapper;
@@ -9,6 +9,7 @@ import java.sql.SQLException;
 /**
  * @author arist
  */
+
 public class RunwayRowMapper implements RowMapper<Runway> {
     @Override
     public Runway mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -33,11 +34,8 @@ public class RunwayRowMapper implements RowMapper<Runway> {
         String heHeadingDegT = resultSet.getString("HE_HEADING_DEGT");
         String heDisplacedThresholdFt = resultSet.getString("HE_DISPLACED_THRESHOLD_FT");
 
-        Runway runway = new Runway(airportRef, airportIdent, lengthFt, widthFt, surface, lighted, closed, leIdent,
+        return new Runway(id, airportRef, airportIdent, lengthFt, widthFt, surface, lighted, closed, leIdent,
                 leLatitudeDeg, leLongitudeDeg, leElevationFt, leHeadingDegT, leDisplacedThresholdFt, heIdent,
                 heLatitudeDeg, heLongitudeDeg, heElevationFt, heHeadingDegT, heDisplacedThresholdFt);
-        runway.setId(id);
-
-        return runway;
     }
 }

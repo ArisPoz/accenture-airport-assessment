@@ -1,9 +1,18 @@
 package com.pozidis.airportassessment.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * @author arist
  */
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Airport {
     private long id;
     private String ident;
@@ -23,173 +32,4 @@ public class Airport {
     private String homeLink;
     private String wikipediaLink;
     private String keywords;
-
-    public Airport() {
-    }
-
-    public Airport(String ident, String type, String name, double latitudeDeg, double longitudeDeg, String elevationFt,
-                   String continent, String isoCountry, String isoRegion, String municipality, String scheduledService,
-                   String gpsCode, String iataCode, String localCode, String homeLink, String wikipediaLink, String keywords) {
-        this.ident = ident;
-        this.type = type;
-        this.name = name;
-        this.latitudeDeg = latitudeDeg;
-        this.longitudeDeg = longitudeDeg;
-        this.elevationFt = elevationFt;
-        this.continent = continent;
-        this.isoCountry = isoCountry;
-        this.isoRegion = isoRegion;
-        this.municipality = municipality;
-        this.scheduledService = scheduledService;
-        this.gpsCode = gpsCode;
-        this.iataCode = iataCode;
-        this.localCode = localCode;
-        this.homeLink = homeLink;
-        this.wikipediaLink = wikipediaLink;
-        this.keywords = keywords;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getIdent() {
-        return ident;
-    }
-
-    public void setIdent(String ident) {
-        this.ident = ident;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getLatitudeDeg() {
-        return latitudeDeg;
-    }
-
-    public void setLatitudeDeg(double latitudeDeg) {
-        this.latitudeDeg = latitudeDeg;
-    }
-
-    public double getLongitudeDeg() {
-        return longitudeDeg;
-    }
-
-    public void setLongitudeDeg(double longitudeDeg) {
-        this.longitudeDeg = longitudeDeg;
-    }
-
-    public String getElevationFt() {
-        return elevationFt;
-    }
-
-    public void setElevationFt(String elevationFt) {
-        this.elevationFt = elevationFt;
-    }
-
-    public String getContinent() {
-        return continent;
-    }
-
-    public void setContinent(String continent) {
-        this.continent = continent;
-    }
-
-    public String getIsoCountry() {
-        return isoCountry;
-    }
-
-    public void setIsoCountry(String isoCountry) {
-        this.isoCountry = isoCountry;
-    }
-
-    public String getIsoRegion() {
-        return isoRegion;
-    }
-
-    public void setIsoRegion(String isoRegion) {
-        this.isoRegion = isoRegion;
-    }
-
-    public String getMunicipality() {
-        return municipality;
-    }
-
-    public void setMunicipality(String municipality) {
-        this.municipality = municipality;
-    }
-
-    public String getScheduledService() {
-        return scheduledService;
-    }
-
-    public void setScheduledService(String scheduledService) {
-        this.scheduledService = scheduledService;
-    }
-
-    public String getGpsCode() {
-        return gpsCode;
-    }
-
-    public void setGpsCode(String gpsCode) {
-        this.gpsCode = gpsCode;
-    }
-
-    public String getIataCode() {
-        return iataCode;
-    }
-
-    public void setIataCode(String iataCode) {
-        this.iataCode = iataCode;
-    }
-
-    public String getLocalCode() {
-        return localCode;
-    }
-
-    public void setLocalCode(String localCode) {
-        this.localCode = localCode;
-    }
-
-    public String getHomeLink() {
-        return homeLink;
-    }
-
-    public void setHomeLink(String homeLink) {
-        this.homeLink = homeLink;
-    }
-
-    public String getWikipediaLink() {
-        return wikipediaLink;
-    }
-
-    public void setWikipediaLink(String wikipediaLink) {
-        this.wikipediaLink = wikipediaLink;
-    }
-
-    public String getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
-    }
 }

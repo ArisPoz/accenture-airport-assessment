@@ -1,4 +1,4 @@
-package com.pozidis.airportassessment.domain.rowMappers;
+package com.pozidis.airportassessment.domain.mapper;
 
 import com.pozidis.airportassessment.domain.Country;
 import org.springframework.jdbc.core.RowMapper;
@@ -9,6 +9,7 @@ import java.sql.SQLException;
 /**
  * @author arist
  */
+
 public class CountryRowMapper implements RowMapper<Country> {
     @Override
     public Country mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -19,9 +20,6 @@ public class CountryRowMapper implements RowMapper<Country> {
         String wikipediaLink = resultSet.getString("WIKIPEDIA_LINK");
         String keywords = resultSet.getString("KEYWORDS");
 
-        Country country = new Country(code, name, continent, wikipediaLink, keywords);
-        country.setId(id);
-
-        return country;
+        return new Country(id, code, name, continent, wikipediaLink, keywords);
     }
 }
