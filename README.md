@@ -9,7 +9,9 @@
 * Junit
 
 ## How to run
-`mvn clean verify`
+Use Maven to run the application.
+
+`mvn clean install`
 
 `mvn spring-boot:run`
 
