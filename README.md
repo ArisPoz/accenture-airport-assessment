@@ -1,6 +1,6 @@
 # Developer Assessment
 
-##Technologies
+## Technologies
 * Spring Boot
 * H2
 * Flyway
@@ -15,11 +15,13 @@ Use Maven to run the application.
 
 `mvn spring-boot:run`
 
-Application base url: http://localhost:8080
+Application base url: http://localhost
+
+Application port    : 8080
 
 Swagger documentation endpoint: http://localhost:8080/swagger-ui.html
 
-##Description
+## Description
 The assessment comes with 3 CSV files. The files contain data for countries, airports and runways.
 
 Write a program that retrieves the following information given the provided files:
@@ -28,7 +30,7 @@ Write a program that retrieves the following information given the provided file
 
 Bonus: Support retrieving the information given a partial/fuzzy country code/name as input parameter, e.g. entering 'zimb' will result in 'Zimbabwe'. 
 
-##Requirements
+## Requirements
 - The program should be written in Java.
 - Write production-ready code.
 - Document how to run the application.
