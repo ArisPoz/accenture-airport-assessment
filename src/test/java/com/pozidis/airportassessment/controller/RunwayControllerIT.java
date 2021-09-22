@@ -1,57 +1,111 @@
 package com.pozidis.airportassessment.controller;
 
-import com.pozidis.airportassessment.repository.RunwayRepository;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * @author arist
  */
 
-@RunWith(SpringRunner.class)
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:db/migration/V0002__Table_Creation.sql")
+@Sql(scripts = "classpath:testDB.sql")
+@TestPropertySource(locations = "classpath:application-test.properties")
 class RunwayControllerIT {
+
+    private static final String BASE_URI = "/v1/runways";
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private RunwayRepository runwayRepository;
-
     @Test
-    @DisplayName("Get successful response with a country name provided.")
-    void getRunwaysByCountryName() throws Exception {
-        String name = "Greece";
+    void getRunwaysByCountryNameTest() throws Exception {
+        // given
+        String name = "GREECE";
+        int expectedRecordId1 = 1;
+        int expectedRecordId2 = 2;
+        int responseSize = 2;
 
-        mockMvc.perform(get(String.format("/runway/runwaysByCountryName?name=%s", name))
-                .contentType("application/json"))
-                .andExpect(status().is2xxSuccessful());
+        // when then
+        mockMvc.perform(get(String.format("%s/country-name?name=%s", BASE_URI, name))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(responseSize)))
+                .andExpect(jsonPath("$[0].id").value(expectedRecordId1))
+                .andExpect(jsonPath("$[1].id").value(expectedRecordId2));
 
-        assertThat(runwayRepository.getRunwaysByCountryName(name)).isNotEmpty();
     }
 
     @Test
-    @DisplayName("Get successful response with a country code provided.")
-    void getRunwaysByCountryCode() throws Exception {
-        String code = "Gr";
+    void getRunwaysByCountryCodeTest() throws Exception {
+        // given
+        String givenCode = "NL";
+        int expectedRunwayID = 3;
+        int responseSize = 1;
 
-        mockMvc.perform(get(String.format("/runway/runwaysByCountryCode?code=%s", code))
-                .contentType("application/json"))
-                .andExpect(status().is2xxSuccessful());
+        // when then
+        mockMvc.perform(get(String.format("%s/country-code?code=%s", BASE_URI, givenCode))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(responseSize)))
+                .andExpect(jsonPath("$[0].id").value(expectedRunwayID));
+    }
 
-        assertThat(runwayRepository.getRunwaysByCountryCode(code)).isNotEmpty();
+    @Test
+    void getRunwaysWithoutCountryNameResultInBadRequestExceptionTest() throws Exception {
+        // given
+        String givenName = "";
+
+        // when then
+        mockMvc.perform(get(String.format("%s/country-name?name=%s", BASE_URI, givenName))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getRunwaysWithoutCountryCodeResultInBadRequestExceptionTest() throws Exception {
+        // given
+        String givenCode = "";
+
+        // when then
+        mockMvc.perform(get(String.format("%s/country-code?code=%s", BASE_URI, givenCode))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getRunwaysWithNonExistingCountryNameResultInBadRequestExceptionTest() throws Exception {
+        // given
+        String givenName = "404 Country";
+
+        // when then
+        mockMvc.perform(get(String.format("%s/country-name?name=%s", BASE_URI, givenName))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getRunwaysWithNonExistingCountryCodeResultInElementNotFoundExceptionTest() throws Exception {
+        // given
+        String givenCode = "404 Code";
+
+        // when then
+        mockMvc.perform(get(String.format("%s/country-code?code=%s", BASE_URI, givenCode))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }

@@ -8,5 +8,5 @@ import java.util.List;
  * @author arist
  */
 public interface CountryRepository {
-    List<Country> getTopCountriesByNumberOfAirports(int countriesNumber);
+    List<Country> getTopCountriesByNumberOfAirports(int top);
 }

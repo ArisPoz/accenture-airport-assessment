@@ -1,46 +1,61 @@
 package com.pozidis.airportassessment.controller;
 
-import com.pozidis.airportassessment.repository.CountryRepository;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * @author arist
  */
 
-@RunWith(SpringRunner.class)
+@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:db/migration/V0002__Table_Creation.sql")
+@TestPropertySource(locations = "classpath:application-test.properties")
+@Sql(scripts = "classpath:testDB.sql")
 class CountryControllerIT {
+
+    private static final String BASE_URI = "/v1/countries/top/by-airports";
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private CountryRepository countryRepository;
-
     @Test
-    @DisplayName("Get successful response with a country name provided.")
-    void getRunwaysByCountryName() throws Exception {
-        int numOfTopCountries = 10;
+    void getTopCountriesByNumberOfAirportTest() throws Exception {
+        // given
+        int numOfCountries = 2;
+        int expectedRecordId1 = 1;
+        int expectedRecordId2 = 2;
 
-        mockMvc.perform(get(String.format("/country/topCountriesByNumberOfAirports?countriesNumber=%d", numOfTopCountries))
-                .contentType("application/json"))
-                .andExpect(status().is2xxSuccessful());
-
-        assertThat(countryRepository.getTopCountriesByNumberOfAirports(numOfTopCountries)).isNotEmpty();
+        // when then
+        mockMvc.perform(get(String.format("%s?numOfCountries=%d", BASE_URI, numOfCountries))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(numOfCountries)))
+                .andExpect(jsonPath("$[0].id").value(expectedRecordId1))
+                .andExpect(jsonPath("$[1].id").value(expectedRecordId2));
     }
 
+    @Test
+    void getWithoutTopCountriesExistResultInElementNotFoundException() throws Exception {
+        // given
+        int numOfCountries = 0;
+
+        // when then
+        mockMvc.perform(get(String.format("%s?numOfCountries=%d", BASE_URI, numOfCountries))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }

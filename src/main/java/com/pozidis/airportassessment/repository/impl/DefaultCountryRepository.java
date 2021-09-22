@@ -1,7 +1,7 @@
 package com.pozidis.airportassessment.repository.impl;
 
 import com.pozidis.airportassessment.domain.Country;
-import com.pozidis.airportassessment.domain.mapper.CountryRowMapper;
+import com.pozidis.airportassessment.repository.mapper.CountryRowMapper;
 import com.pozidis.airportassessment.repository.CountryRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -14,7 +14,6 @@ import java.util.List;
 
 @Repository
 public class DefaultCountryRepository implements CountryRepository {
-
     private final JdbcTemplate jdbcTemplate;
     private final CountryRowMapper countryRowMapper;
 
@@ -24,12 +23,11 @@ public class DefaultCountryRepository implements CountryRepository {
     }
 
     @Override
-    public List<Country> getTopCountriesByNumberOfAirports(int countriesNumber) {
-        return jdbcTemplate.query(String.format("SELECT COUNTRY.*" +
+    public List<Country> getTopCountriesByNumberOfAirports(int top) {
+        return jdbcTemplate.query(String.format("SELECT TOP %d COUNTRY.*" +
                 "FROM AIRPORT, COUNTRY " +
                 "WHERE AIRPORT.ISO_COUNTRY = COUNTRY.CODE " +
                 "GROUP BY COUNTRY.CODE " +
-                "ORDER BY COUNT(*) DESC " +
-                "LIMIT %s", countriesNumber), countryRowMapper);
+                "ORDER BY COUNT(*) DESC ", top), countryRowMapper);
     }
 }

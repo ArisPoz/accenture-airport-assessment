@@ -1,4 +1,4 @@
-package com.pozidis.airportassessment.domain.mapper;
+package com.pozidis.airportassessment.repository.mapper;
 
 import com.pozidis.airportassessment.domain.Runway;
 import org.springframework.jdbc.core.RowMapper;

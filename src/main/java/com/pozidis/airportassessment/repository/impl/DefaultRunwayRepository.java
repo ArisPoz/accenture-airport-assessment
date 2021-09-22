@@ -1,8 +1,8 @@
 package com.pozidis.airportassessment.repository.impl;
 
 import com.pozidis.airportassessment.domain.Runway;
-import com.pozidis.airportassessment.domain.mapper.RunwayRowMapper;
 import com.pozidis.airportassessment.repository.RunwayRepository;
+import com.pozidis.airportassessment.repository.mapper.RunwayRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +14,6 @@ import java.util.List;
 
 @Repository
 public class DefaultRunwayRepository implements RunwayRepository {
-
     private final JdbcTemplate jdbcTemplate;
     private final RunwayRowMapper runwayRowMapper;
 

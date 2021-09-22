@@ -1,11 +1,24 @@
 # Developer Assessment
 
+##Technologies
+* Spring Boot
+* H2
+* Flyway
+* Lombok
+* Swagger
+* Junit
+
+## How to run
+`mvn clean verify`
+
+`mvn spring-boot:run`
+
 ##Description
 The assessment comes with 3 CSV files. The files contain data for countries, airports and runways.
 
 Write a program that retrieves the following information given the provided files:
 - Runways for each airport given a country code or country name. 
-- Top 10 countries with highest number of airports.
+- Top 10 countries with the highest number of airports.
 
 Bonus: Support retrieving the information given a partial/fuzzy country code/name as input parameter, e.g. entering 'zimb' will result in 'Zimbabwe'. 
 

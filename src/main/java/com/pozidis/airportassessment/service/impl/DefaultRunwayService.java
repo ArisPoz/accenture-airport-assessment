@@ -15,7 +15,6 @@ import java.util.List;
 
 @Service
 public class DefaultRunwayService implements RunwayService {
-
     private final RunwayRepository runwayRepository;
 
     public DefaultRunwayService(RunwayRepository runwayRepository) {
@@ -24,7 +23,6 @@ public class DefaultRunwayService implements RunwayService {
 
     @Override
     public List<Runway> getRunwaysByCountryName(String name) {
-
         if (name.isEmpty())
             throw new BadRequestException("Country name must be provided.");
 
@@ -38,7 +36,6 @@ public class DefaultRunwayService implements RunwayService {
 
     @Override
     public List<Runway> getRunwaysByCountryCode(String code) {
-
         if (code.isEmpty())
             throw new BadRequestException("Country code must be provided.");
 

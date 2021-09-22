@@ -1,4 +1,4 @@
-package com.pozidis.airportassessment.domain.mapper;
+package com.pozidis.airportassessment.repository.mapper;
 
 import com.pozidis.airportassessment.domain.Airport;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,7 +11,6 @@ import java.sql.SQLException;
  */
 
 public class AirportRowMapper implements RowMapper<Airport> {
-
     @Override
     public Airport mapRow(ResultSet resultSet, int index) throws SQLException {
         long id = resultSet.getLong("ID");

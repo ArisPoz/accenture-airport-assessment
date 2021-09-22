@@ -9,5 +9,6 @@ import java.util.List;
  */
 public interface RunwayRepository {
     List<Runway> getRunwaysByCountryName(String name);
+
     List<Runway> getRunwaysByCountryCode(String code);
 }

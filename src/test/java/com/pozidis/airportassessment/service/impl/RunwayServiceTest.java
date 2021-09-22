@@ -8,12 +8,10 @@ import com.pozidis.airportassessment.service.RunwayService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,44 +22,43 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author arist
  */
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
-class RunwayServiceIT {
+@ExtendWith(MockitoExtension.class)
+class RunwayServiceTest {
 
-    @Autowired
-    private RunwayService runwayService;
-
-    @MockBean
+    @Mock
     private RunwayRepository runwayRepository;
+
+    private RunwayService runwayService;
 
     @BeforeEach
     void setUp() {
-        Mockito.when(runwayRepository.getRunwaysByCountryCode("GR")).thenReturn(getRunways());
-        Mockito.when(runwayRepository.getRunwaysByCountryName("GREECE")).thenReturn(getRunways());
+        runwayService = new DefaultRunwayService(runwayRepository);
     }
 
     @Test
     void givenValidCountryNameGetRunwaysTest() {
         // given
+        Mockito.when(runwayRepository.getRunwaysByCountryName("GREECE")).thenReturn(getRunways());
         String countryName = "GREECE";
 
         // when
         List<Runway> runways = runwayService.getRunwaysByCountryName(countryName);
 
         // then
-        assertThat(runways).isNotEmpty();
+        assertThat(runways).isNotEmpty().hasSize(2).contains(getRunways().get(0)).contains(getRunways().get(1));
     }
 
     @Test
     void givenValidCountryCodeGetRunwaysTest() {
         // given
+        Mockito.when(runwayRepository.getRunwaysByCountryCode("GR")).thenReturn(getRunways());
         String countryCode = "GR";
 
         // when
         List<Runway> runways = runwayService.getRunwaysByCountryCode(countryCode);
 
         // then
-        assertThat(runways).isNotEmpty();
+        assertThat(runways).isNotEmpty().hasSize(2).contains(getRunways().get(0)).contains(getRunways().get(1));
     }
 
     @Test
@@ -109,7 +106,7 @@ class RunwayServiceIT {
         runways.add(new Runway(1, 1000, "GR", 10, 50, "Surface", true,
                 false, "", "", "", "", "", "",
                 "", "", "", "", "", ""));
-        runways.add(new Runway(2, 2000, "NL", 100, 150, "Surface2", true,
+        runways.add(new Runway(2, 2000, "GR", 100, 150, "Surface2", true,
                 false, "", "", "", "", "", "",
                 "", "", "", "", "", ""));
 

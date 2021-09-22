@@ -13,22 +13,21 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/runway/")
+@RequestMapping("/v1/runways")
 public class RunwayController {
-
     private final RunwayService runwayService;
 
     public RunwayController(RunwayService runwayService) {
         this.runwayService = runwayService;
     }
 
-    @GetMapping(value = "/runwaysByCountryName", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "country-name", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<Runway> getRunwaysByCountryName(@RequestParam String name) {
         return runwayService.getRunwaysByCountryName(name);
     }
 
-    @GetMapping(value = "/runwaysByCountryCode", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "country-code", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<Runway> getRunwaysByCountryCode(@RequestParam String code) {
         return runwayService.getRunwaysByCountryCode(code);
