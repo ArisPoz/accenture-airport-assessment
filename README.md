@@ -15,6 +15,10 @@ Use Maven to run the application.
 
 `mvn spring-boot:run`
 
+Application base url: http://localhost:8080
+
+Swagger documentation endpoint: http://localhost:8080/swagger-ui.html
+
 ##Description
 The assessment comes with 3 CSV files. The files contain data for countries, airports and runways.
 
